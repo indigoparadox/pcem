@@ -140,6 +140,7 @@ void xt_zenith_init();
 void at_mvp3_init();
 void at_vs440fx_init();
 void at_ga686bx_init();
+void tandy4850_init();
 
 int AMSTRAD, AT, PCI, TANDY, MCA;
 
@@ -260,6 +261,20 @@ void tandy1ksl2_init() {
 	device_add(&tandy_rom_device);
 	device_add(&tandy_eeprom_device);
 	device_add(&gameport_device);
+}
+
+void tandy4850_init() {
+//        TANDY = 1;
+	AT = 1;
+	common_init();
+	mem_add_bios();
+	pit_set_out_func(&pit, 1, pit_refresh_timer_at);
+	dma16_init();
+	keyboard_at_init();
+	device_add(&nvr_device);
+	pic2_init();
+	device_add(&gameport_device);
+	nmi_mask = 0;
 }
 
 void ams_init() {
@@ -835,6 +850,8 @@ MODEL m_ibmps2_m70_type4 = {"[486] IBM PS/2 Model 70 (type 4)", ROM_IBMPS2_M70_T
 MODEL m_pb410a =
 	{"[486] Packard Bell PB410A", ROM_PB410A, "pb410a", {{"Intel", cpus_i486}, {"AMD", cpus_Am486}, {"Cyrix", cpus_Cx486}}, MODEL_GFX_DISABLE_SW | MODEL_AT | MODEL_PS2 | MODEL_HAS_IDE, 1, 64, 1,
 		at_pb410a_init, NULL};
+MODEL m_tandy4850ep =
+   {"[486] Tandy 4850 EP", ROM_TANDY4850EP, "tandy4850ep", {{"Intel", cpus_i486}, {"", NULL}, {"", NULL}}, MODEL_GFX_DISABLE_HW | MODEL_AT | MODEL_HAS_IDE, 4, 32, 4, tandy4850_init, NULL};
 
 /* Socket 4 PC's */
 MODEL m_revenge =
@@ -975,6 +992,7 @@ void model_init_builtin() {
 	pcem_add_model(&m_ibmps1_2133);
 	pcem_add_model(&m_ibmps2_m70_type4);
 	pcem_add_model(&m_pb410a);
+   pcem_add_model(&m_tandy4850ep);
 
 	/* Socket 4 PC's */
 	pcem_add_model(&m_revenge);

@@ -240,6 +240,9 @@ device_t *video_card_getdevice(int card, int romset) {
 	case ROM_PB520R:return &gd5434_pb520r_device;
 
 	case ROM_CBM_SL386SX25:return &avga2_cbm_sl386sx_device;
+
+   /* TODO */
+	case ROM_TANDY4850EP:return &gd5434_pb520r_device;
 	}
 	return video_cards[card]->device;
 }
@@ -351,6 +354,7 @@ int video_is_mda() {
 	case ROM_PB410A:
 	case ROM_PB570:
 	case ROM_PB520R:
+   case ROM_TANDY4850EP:
 	case ROM_CBM_SL386SX25:return 0;
 	}
 	return (video_cards[video_old_to_new(gfxcard)]->flags & VIDEO_FLAG_TYPE_MASK) == VIDEO_FLAG_TYPE_MDA;
@@ -394,6 +398,7 @@ int video_is_cga() {
 	case ROM_PB410A:
 	case ROM_PB570:
 	case ROM_PB520R:
+   case ROM_TANDY4850EP:
 	case ROM_CBM_SL386SX25:return 0;
 	}
 	return (video_cards[video_old_to_new(gfxcard)]->flags & VIDEO_FLAG_TYPE_MASK) == VIDEO_FLAG_TYPE_CGA;
@@ -430,6 +435,7 @@ int video_is_ega_vga() {
 	case ROM_PB410A:
 	case ROM_PB570:
 	case ROM_PB520R:
+   case ROM_TANDY4850EP:
 	case ROM_CBM_SL386SX25:return 1;
 	}
 	return (video_cards[video_old_to_new(gfxcard)]->flags & VIDEO_FLAG_TYPE_MASK) == VIDEO_FLAG_TYPE_SPECIAL;
@@ -595,6 +601,10 @@ void video_updatetiming() {
 
 		case ROM_PB520R:timing = &timing_pb520r;
 			break;
+
+      /* TODO */
+      case ROM_TANDY4850EP:timing = &timing_pb570;
+         break;
 
 		case ROM_CBM_SL386SX25:timing = &timing_avga2;
 			break;
@@ -776,6 +786,14 @@ void video_init() {
 		return;
 
 	case ROM_PB520R:device_add(&gd5434_pb520r_device);
+		if (gfxcard != GFX_BUILTIN) {
+			svga_set_override(svga_get_pri(), 1);
+			break;
+		}
+		return;
+
+   /* TODO */
+	case ROM_TANDY4850EP:device_add(&gd5430_pb570_device);
 		if (gfxcard != GFX_BUILTIN) {
 			svga_set_override(svga_get_pri(), 1);
 			break;

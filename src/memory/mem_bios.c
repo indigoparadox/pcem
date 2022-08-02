@@ -1184,6 +1184,14 @@ int loadbios() {
 
 		biosmask = 0x3ffff;
 		return 1;
+
+   case ROM_TANDY4850EP:
+      f = romfopen( "tandy4850ep.bin", "rb");
+      if (!f)
+         break;
+		romfread(rom, 65536, 1, f);
+      fclose(f);
+      return 1;
 	}
 	printf("Failed to load ROM!\n");
 	if (f)
