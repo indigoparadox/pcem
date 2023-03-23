@@ -439,6 +439,8 @@ void loadnvr() {
 	case ROM_GA686BX: f = nvrfopen("ga686bx.nvr", "rb");
 		nvrmask = 127;
 		break;
+	case ROM_TANDY4850EP: f = nvrfopen("tandy4850ep.nvr", "rb");
+		break;
 
 	default: return;
 	}
@@ -617,6 +619,8 @@ void savenvr() {
 		break;
 	case ROM_GA686BX: f = nvrfopen("ga686bx.nvr", "wb");
 		break;
+	case ROM_TANDY4850EP: f = nvrfopen("tandy4850ep.nvr", "wb");
+      break;
 
 	default: return;
 	}
